@@ -1,0 +1,13 @@
+turtle.py:
+    * find alternative to pySVG
+      (confusing licence terms for pySVG. http://codeboje.de/pysvg/ says
+      BSD-new, while the "complete source tree" downlowload has two licences;
+      the GPLv3 and a separate licence for "any redistribution for which you
+      demand money" and "any usage of pySVG in a company". Eh, what?)
+
+    * create turtle with csound or similar sound library
+
+lsystem.py:
+    * create a stochastic generator
+
+

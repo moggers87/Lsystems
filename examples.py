@@ -1,3 +1,7 @@
+"""
+This script will go if someone writes some documention :)
+"""
+
 import lsystem
 import turtle
 import sys
