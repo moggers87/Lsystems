@@ -22,7 +22,9 @@ class LSystem(object):
     """LSystem is iterable and string-like. It is good."""
 
     def __init__( self, axiom, rules ):
-        """Set initial string and compile rules"""
+        """Set initial string and compile rules
+
+        rules must be a dict of strings"""
 
         self.string = axiom
         self.rules = rules
@@ -30,9 +32,10 @@ class LSystem(object):
 
     def step( self ):
         """Generate the next generation"""
-        self.string = self.regex.sub( self.__match, self.string )
+        self.string = self.regex.sub( self.match, self.string )
 
-    def __match( self, match ):
+    def match( self, match ):
+        """Override this method if you want to change behaviour on matching symbol"""
         return self.rules[ match.group( 0 ) ]
 
     def __len__( self ):
