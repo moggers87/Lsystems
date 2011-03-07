@@ -8,7 +8,6 @@ turtle.py:
     * create turtle with csound or similar sound library
 
 lsystem.py:
-    * create a stochastic generator
     * create a context-sensitive generator
       http://www.cs.umbc.edu/~ebert/693/TLin/node17.html
 

@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 import re
+from random import choice
 
 class LSystem(object):
     """LSystem is iterable and string-like. It is good."""
@@ -47,3 +48,22 @@ class LSystem(object):
     def __getitem__( self, index ):
         return self.string[ index ]
 
+class StochasticLSystem(LSystem):
+    """Non-deterministic version of LSystem"""
+
+    def __init__( self, axiom, rules ):
+        """Set initial string and compile rules
+
+        rules must be a dict of non-empty lists. Each list must contain strings
+        or Nones, the number of items affecting the probability of that
+        replacement being chosen. If a None is chosen, no replacement is made."""
+        super( StochasticLSystem, self ).__init__( axiom, rules )
+
+    def match( self, match ):
+        """Override this method if you want to change behaviour on matching symbol"""
+        replacement = choice( self.rules[ match.group( 0 ) ] )
+
+        if replacement is None:
+            replacement = match.group( 0 )
+
+        return replacement
