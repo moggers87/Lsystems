@@ -4,7 +4,7 @@ This script will go if someone writes some documention :)
 
 import lsystem
 import turtle
-import sys
+from collections import namedtuple
 
 """
 F forward
@@ -15,58 +15,121 @@ F forward
 ] pop
 """
 
-start = 'F'
-rule = { 'F': 'FF-[-F+F+F]+[+F-F-F]' }
-name = 'tree'
-angle = 22.5
+Systems = namedtuple( 'Systems', 'axiom, rules, angle, initial_angle, dist, age, lsystem, turtle, filetype' )
 
-#start = 'X'
-#rule = { 'X' : 'F-[[X]+X]+F[+FX]-X', 'F' : 'FF' }
-#name = 'weed'
-#angle = 25
+sys_dict = {
+    'tree': Systems(
+        axiom = 'F',
+        rules = { 'F': 'FF-[-F+F+F]+[+F-F-F]' },
+        angle = 22.5,
+        initial_angle = -90,
+        dist = 10,
+        age = 5,
+        turtle = turtle.TurtlePIL,
+        lsystem = lsystem.LSystem,
+        filetype = 'png'
+    ),
 
-#start = 'F+F+F'
-#rule = { 'F' : 'F+F-F-F+F' }
-#name = 'sTri'
-#angle = 120
+    'weed': Systems(
+        axiom = 'X',
+        rules = { 'X' : 'F-[[X]+X]+F[+FX]-X', 'F' : 'FF' },
+        angle = 25,
+        initial_angle = -90,
+        dist = 10,
+        age = 5,
+        turtle = turtle.TurtlePIL,
+        lsystem = lsystem.LSystem,
+        filetype = 'png'
+    ),
 
-#start = 'F'
-#rule = { 'F' : 'G-F-G', 'G' : 'F+G+F' }
-#name = 'sTri2'
-#angle = 60
+    'sTri': Systems(
+        axiom = 'F+F+F',
+        rules = { 'F' : 'F+F-F-F+F' },
+        angle = 120,
+        initial_angle = 0,
+        dist = 10,
+        age = 5,
+        turtle = turtle.TurtlePIL,
+        lsystem = lsystem.LSystem,
+        filetype = 'png'
+    ),
 
-dist = 10
-age = 5
-name = name + '-gen' + str(age) + '-ang' + str(angle) + '-len' + str(dist) + '.png'
-filetype = 'png'
-turt = turtle.TurtlePIL()
-tree = lsystem.LSystem( axiom=start , rules=rule  )
-action = { \
-            'F': [ turt.forward, dist ], \
-            'G': [ turt.forward, dist ], \
-            '-': [ turt.right, angle ], \
-            '+': [ turt.left, angle ], \
-            '|': [ turt.right, 180 ], \
-            '[': [ turt.push ], \
-            ']': [ turt.pop ] \
+    'sTri2': Systems(
+        axiom = 'F',
+        rules = { 'F' : 'G-F-G', 'G' : 'F+G+F' },
+        angle = 60,
+        initial_angle = -60,
+        dist = 10,
+        age = 5,
+        turtle = turtle.TurtlePIL,
+        lsystem = lsystem.LSystem,
+        filetype = 'png'
+    ),
+
+    'stoch-tree': Systems(
+        axiom = 'F',
+        rules = { 'F': [ 'FF-[-F+F+F]+[+F-F-F]', 'FF-[-F+F+F]+[+F-F-F]', None ] },
+        angle = 22.5,
+        initial_angle = -90,
+        dist = 10,
+        age = 5,
+        turtle = turtle.TurtlePIL,
+        lsystem = lsystem.StochasticLSystem,
+        filetype = 'png'
+    ),
+
+    'stoch-weed': Systems(
+        axiom = 'X',
+        rules = { 'X' : [ 'F-[[X]+X]+F[+FX]-X', 'F-[[X]+X]+F[+FX]-X', None ] , 'F' : [ 'FF', 'FF', None ] },
+        angle = 25,
+        initial_angle = -90,
+        dist = 10,
+        age = 5,
+        turtle = turtle.TurtlePIL,
+        lsystem = lsystem.StochasticLSystem,
+        filetype = 'png'
+    )
+}
+
+def generator ( name, sys_dict ):
+    print name + '...'
+
+    item = sys_dict[name]
+    name = name + '-gen' + str(item.age) + '-ang' + str(item.angle) + '-len' + str(item.dist) + '.' + item.filetype
+    turt = item.turtle( initial_angle = item.initial_angle )
+    tree = item.lsystem( axiom=item.axiom , rules=item.rules )
+
+    action = {
+            'F': [ turt.forward, item.dist ],
+            'G': [ turt.forward, item.dist ],
+            '-': [ turt.right, item.angle ],
+            '+': [ turt.left, item.angle ],
+            '|': [ turt.right, 180 ],
+            '[': [ turt.push ],
+            ']': [ turt.pop ]
          }
 
-i = 0
-while i < age:
-    i = i + 1
-    tree.step()
+    i = 0
+    while i < item.age:
+        i = i + 1
+        tree.step()
 
-commands = str(tree)
-del tree
-print 'Releasing lsystem object...'
+    commands = str(tree)
+    del tree
+    print 'Releasing lsystem object...'
 
-for term in commands:
-    if term in action:
-        if len(action[term]) > 1:
-            action[term][0](action[term][1])
-        else:
-            action[term][0]()
+    for term in commands:
+        if term in action:
+            if len(action[term]) > 1:
+                action[term][0](action[term][1])
+            else:
+                action[term][0]()
 
-turt.draw()
-turt.save( name, filetype )
-print 'Drawing saved as ' + name
+    turt.draw()
+    turt.save( name, item.filetype )
+    print 'Drawing saved as ' + name
+
+#run all examples if not imported
+if __name__== '__main__':
+    for key in sys_dict:
+        generator( key, sys_dict )
