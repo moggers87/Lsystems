@@ -67,3 +67,32 @@ class StochasticLSystem(LSystem):
             replacement = match.group( 0 )
 
         return replacement
+
+class TreeSystem(object):
+    """Rather than using a string, we use a tree like structure
+    (in fact, this isn't really an LSystem at all)
+    """
+
+    def __init__(self):
+        prime_branch = []
+        left_branch = []
+        right_branch = []
+        turn_left = '-'
+        turn_right = '+'
+
+        #'F': 'FF-[-F+F+F]+[+F-F-F]'
+
+        tmp = [prime_branch, prime_branch, turn_left, left_branch, turn_right, right_branch]
+        prime_branch.extend(tmp)
+
+        tmp = [turn_left, prime_branch, turn_right, prime_branch, turn_right, prime_branch]
+        left_branch.extend(tmp)
+
+        tmp = [turn_right, prime_branch, turn_left, prime_branch, turn_left, prime_left]
+        right_branch.extend(tmp)
+
+        """We now have a a self referencing list that implements the rule above.
+
+        That'd be fine if we had an infinate tree, but we don't. We need a way to count generations
+        and to trace back up the tree when we've got as deep as we want to go.
+        """
