@@ -116,10 +116,9 @@ sys_dict = {
 
 }
 
-def generator ( name, sys_dict ):
+def generator ( name, item ):
     print name + '...'
 
-    item = sys_dict[name]
     name = name + '-gen' + str(item.age) + '-ang' + str(item.angle) + '-len' + str(item.dist) + '.' + item.filetype
     turt = item.turtle( initial_angle = item.initial_angle )
     tree = item.lsystem( axiom=item.axiom , rules=item.rules )
@@ -157,4 +156,4 @@ def generator ( name, sys_dict ):
 #run all examples if not imported
 if __name__== '__main__':
     for key in sys_dict:
-        generator( key, sys_dict )
+        generator( key, sys_dict[key] )
