@@ -17,7 +17,7 @@ F forward
 
 Systems = namedtuple( 'Systems', 'axiom, rules, angle, initial_angle, dist, age, lsystem, turtle, filetype' )
 
-sys_dict = {
+examples = {
     'tree': Systems(
         axiom = 'F',
         rules = { 'F': 'FF-[-F+F+F]+[+F-F-F]' },
@@ -66,18 +66,6 @@ sys_dict = {
         filetype = 'png'
     ),
 
-    'stoch-tree': Systems(
-        axiom = 'F',
-        rules = { 'F': [ 'FF-[-F+F+F]+[+F-F-F]', 'FF-[-F+F+F]+[+F-F-F]', None ] },
-        angle = 22.5,
-        initial_angle = -90,
-        dist = 10,
-        age = 5,
-        turtle = turtle.TurtlePIL,
-        lsystem = lsystem.StochasticLSystem,
-        filetype = 'png'
-    ),
-
     'stoch-weed': Systems(
         axiom = 'X',
         rules = { 'X' : [ 'F-[[X]+X]+F[+FX]-X', 'F-[[X]+X]+F[+FX]-X', None ] , 'F' : [ 'FF', 'FF', None ] },
@@ -113,7 +101,6 @@ sys_dict = {
         lsystem = lsystem.StochasticLSystem,
         filetype = 'png'
     )
-
 }
 
 def generator ( name, item ):
@@ -155,5 +142,5 @@ def generator ( name, item ):
 
 #run all examples if not imported
 if __name__== '__main__':
-    for key in sys_dict:
-        generator( key, sys_dict[key] )
+    for name, system in examples.iteritems():
+        generator( name, system )
