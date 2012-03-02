@@ -20,7 +20,11 @@ from PIL import Image, ImageDraw
 
 class Turtle( object ):
     """Turtle base object"""
-    def __init__( self, initial_position=( 0, 0 ), initial_angle=0 ):
+    def __init__( self, initial_position=( 0, 0 ), initial_angle=0, pen_colour=255, bg_colour=0, pen_width=1 ):
+        self.pen_width = pen_width
+        self.pen_colour = pen_colour
+        self.bg_colour = bg_colour
+
         self.angle = math.radians(initial_angle)
         self.pen = 1
         self.positions = [ ( initial_position, self.pen ) ]
@@ -85,14 +89,12 @@ class Turtle( object ):
 
 class TurtlePIL( Turtle ):
     """PIL version of turtle"""
-    def __init__( self, initial_position=( 0, 0 ), initial_angle=0 ):
-        super( TurtlePIL, self ).__init__( initial_position, initial_angle )
 
     def draw( self ):
         """Render lines onto canvas"""
         self.calc_size()
         size = ( math.trunc( math.ceil( self.size[0] ) ), math.trunc( math.ceil( self.size[1] ) ) )
-        self.image = Image.new( 'L', size )
+        self.image = Image.new( 'L', size, self.bg_colour )
         draw = ImageDraw.Draw(self.image)
         prev = None
 
@@ -100,7 +102,7 @@ class TurtlePIL( Turtle ):
             x = ( xy[0] - self.x_min ) + self.border
             y = ( xy[1] - self.y_min ) + self.border
             if prev is not None and pen is 1:
-                draw.line( [ prev[0], ( x, y ) ], 255 )
+                draw.line( [ prev[0], ( x, y ) ], fill=self.pen_colour, width=self.pen_width )
 
             prev = ( ( x, y ), pen )
 
