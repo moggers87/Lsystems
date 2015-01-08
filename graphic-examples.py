@@ -1,6 +1,7 @@
 """
 This script will go if someone writes some documention :)
 """
+from __future__ import print_function
 
 import lsystem
 import turtle
@@ -103,8 +104,8 @@ examples = {
     )
 }
 
-def generator ( name, item ):
-    print name + '...'
+def generator(name, item):
+    print(name + "...")
 
     name = name + '-gen' + str(item.age) + '-ang' + str(item.angle) + '-len' + str(item.dist) + '.' + item.filetype
     turt = item.turtle( initial_angle = item.initial_angle )
@@ -127,7 +128,7 @@ def generator ( name, item ):
 
     commands = str(tree)
     del tree
-    print 'Releasing lsystem object...'
+    print('Releasing lsystem object...')
 
     for term in commands:
         if term in action:
@@ -138,9 +139,9 @@ def generator ( name, item ):
 
     turt.draw()
     turt.save( name, item.filetype )
-    print 'Drawing saved as ' + name
+    print('Drawing saved as {0}'.format(name))
 
 #run all examples if not imported
 if __name__== '__main__':
-    for name, system in examples.iteritems():
-        generator( name, system )
+    for name, system in examples.items():
+        generator(name, system)

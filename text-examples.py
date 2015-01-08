@@ -1,6 +1,8 @@
 """
 This script will go if someone writes some documention :)
 """
+from __future__ import print_function
+
 
 import lsystem
 import turtle
@@ -15,7 +17,7 @@ tree = lsystem.LSystem( axiom=axiom , rules=rules )
 i = 0
 while i < age:
     i = i + 1
-    print tree
+    print(tree)
     tree.step()
 
-print tree
+print(tree)
