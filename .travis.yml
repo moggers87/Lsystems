@@ -5,6 +5,6 @@ python:
     - "3.3"
     - "3.4"
 
-install: pip install PIL
+install: pip install pillow
 
 script: python text-examples.py 
