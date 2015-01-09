@@ -9,10 +9,10 @@ import turtle
 from collections import namedtuple
 
 axiom = 'A'
-rules = { 'A' : 'AB', 'B' : 'A' }
+rules = {'A': 'AB', 'B': 'A'}
 age = 5
 
-tree = lsystem.LSystem( axiom=axiom , rules=rules )
+tree = lsystem.LSystem(axiom=axiom , rules=rules)
 
 i = 0
 while i < age:

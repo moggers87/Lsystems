@@ -22,48 +22,48 @@ from random import choice
 class LSystem(object):
     """LSystem is iterable and string-like. It is good."""
 
-    def __init__( self, axiom, rules ):
+    def __init__(self, axiom, rules):
         """Set initial string and compile rules
 
         rules must be a dict of strings"""
 
         self.string = axiom
         self.rules = rules
-        self.regex = re.compile( "|".join( map( re.escape, rules ) ) )
+        self.regex = re.compile("|".join(map(re.escape, rules)))
 
-    def step( self ):
+    def step(self):
         """Generate the next generation"""
         self.string = self.regex.sub( self.match, self.string )
 
-    def match( self, match ):
+    def match(self, match):
         """Override this method if you want to change behaviour on matching symbol"""
-        return self.rules[ match.group( 0 ) ]
+        return self.rules[match.group(0)]
 
-    def __len__( self ):
-        return len( self.string )
+    def __len__(self):
+        return len(self.string)
 
-    def __str__( self ):
+    def __str__(self):
         return self.string
 
-    def __getitem__( self, index ):
-        return self.string[ index ]
+    def __getitem__(self, index):
+        return self.string[index]
 
 class StochasticLSystem(LSystem):
     """Non-deterministic version of LSystem"""
 
-    def __init__( self, axiom, rules ):
+    def __init__(self, axiom, rules):
         """Set initial string and compile rules
 
         rules must be a dict of non-empty lists. Each list must contain strings
         or Nones, the number of items affecting the probability of that
         replacement being chosen. If a None is chosen, no replacement is made."""
-        super( StochasticLSystem, self ).__init__( axiom, rules )
+        super(StochasticLSystem, self).__init__(axiom, rules)
 
-    def match( self, match ):
+    def match(self, match):
         """Override this method if you want to change behaviour on matching symbol"""
-        replacement = choice( self.rules[ match.group( 0 ) ] )
+        replacement = choice(self.rules[match.group(0)])
 
         if replacement is None:
-            replacement = match.group( 0 )
+            replacement = match.group(0)
 
         return replacement
