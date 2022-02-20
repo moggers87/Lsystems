@@ -42,15 +42,11 @@ class Turtle(object):
         y = y + math.sin(self.angle) * length
         x = x + math.cos(self.angle) * length
 
-        if x > self.x_max:
-            self.x_max = x
-        elif x < self.x_min:
-            self.x_min = x
+        self.x_max = min(x, self.x_max)
+        self.x_min = min(x, self.x_min)
 
-        if y > self.y_max:
-            self.y_max = y
-        elif y < self.y_min:
-            self.y_min = y
+        self.y_max = min(y, self.y_max)
+        self.y_min = min(y, self.y_min)
 
         self.positions.append(((x, y), self.pen))
 
@@ -87,6 +83,7 @@ class Turtle(object):
         self.border = border
         self.size = (border * 2 + self.x_max - self.x_min, border * 2 + self.y_max - self.y_min)
 
+
 class TurtlePIL(Turtle):
     """PIL version of turtle"""
 
@@ -101,10 +98,10 @@ class TurtlePIL(Turtle):
         for xy, pen in self.positions:
             x = (xy[0] - self.x_min) + self.border
             y = (xy[1] - self.y_min) + self.border
-            if prev is not None and pen is 1:
-                draw.line([prev[0], (x, y)], fill=self.pen_colour, width=self.pen_width)
+            if prev is not None and pen == 1:
+                draw.line([prev, (x, y)], fill=self.pen_colour, width=self.pen_width)
 
-            prev = ((x, y), pen)
+            prev = (x, y)
 
     def save(self, file_name, file_type=None):
         """Save to a file
@@ -112,7 +109,3 @@ class TurtlePIL(Turtle):
         If file_type is not given, it will be determined from file_name
         """
         self.image.save(file_name, file_type)
-
-class TurtleSVG(Turtle):
-    """SVG version of turtle"""
-    pass

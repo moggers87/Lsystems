@@ -99,6 +99,7 @@ examples = {
     )
 }
 
+
 def generator(name, item):
     print(name + "...")
 
@@ -106,7 +107,7 @@ def generator(name, item):
     turt = item.turtle(initial_angle=item.initial_angle)
     tree = item.lsystem(axiom=item.axiom, rules=item.rules)
 
-    action = {
+    action_map = {
             'F': [turt.forward, item.dist],
             'G': [turt.forward, item.dist],
             '-': [turt.right, item.angle],
@@ -115,10 +116,9 @@ def generator(name, item):
             '[': [turt.push],
             ']': [turt.pop]
          }
+    noop_action = [lambda: None]
 
-    i = 0
-    while i < item.age:
-        i = i + 1
+    for _ in range(item.age):
         tree.step()
 
     commands = str(tree)
@@ -126,15 +126,13 @@ def generator(name, item):
     print('Releasing lsystem object...')
 
     for term in commands:
-        if term in action:
-            if len(action[term]) > 1:
-                action[term][0](action[term][1])
-            else:
-                action[term][0]()
+        action = action_map.get(term, noop_action)
+        action[0](*action[1:])
 
     turt.draw()
-    turt.save( name, item.filetype )
+    turt.save(name, item.filetype)
     print('Drawing saved as {0}'.format(name))
+
 
 #run all examples if not imported
 if __name__== '__main__':

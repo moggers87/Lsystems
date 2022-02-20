@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import re
 from random import choice
 
+
 class LSystem(object):
     """LSystem is iterable and string-like. It is good."""
 
@@ -47,6 +48,7 @@ class LSystem(object):
 
     def __getitem__(self, index):
         return self.string[index]
+
 
 class StochasticLSystem(LSystem):
     """Non-deterministic version of LSystem"""
